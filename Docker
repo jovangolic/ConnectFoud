@@ -1,0 +1,18 @@
+# Koristi oficijalnu Java sliku
+FROM openjdk:17-jdk-slim
+
+# Postavi radni direktorijum
+WORKDIR /app
+
+# Kopiraj pom.xml i preuzmi zavisnosti
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Kopiraj ostatak koda
+COPY . .
+
+# Build aplikacije
+RUN mvn clean package
+
+# Pokreni aplikaciju
+CMD ["java", "-jar", "target/ConnectFoud-0.0.1-SNAPSHOT.jar"]
